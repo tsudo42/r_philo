@@ -1,0 +1,19 @@
+name: Norminette
+
+on: push
+
+jobs:
+  norm:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout git repository
+        uses: actions/checkout@v2
+
+      - name: Install Norminette
+        run: |
+          python3 -m pip install --upgrade pip setuptools
+          python3 -m pip install norminette
+
+      - name: Run Norminette
+        run: norminette srcs includes
