@@ -1,0 +1,100 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: tsudo <tsudo@student.42tokyo.jp>           +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/07/01 00:00:00 by tsudo             #+#    #+#              #
+#    Updated: 2022/07/01 00:00:00 by tsudo            ###   ##########         #
+#                                                                              #
+# **************************************************************************** #
+
+NAME	:= philo
+CC		:= gcc
+CFLAGS	:= -Wall -Wextra -Werror -MMD -MP -O0
+LDFLAGS	:=
+RM		:= rm -f
+LIBFT	:= libft/libft.a
+UNAME	:= $(shell uname)
+
+ifeq ($(DEBUG), 1)
+CFLAGS	+= -g3
+endif
+
+# **************************************************************************** #
+
+SRCS	+= $(P_SRCS)
+P_SRCS	:= \
+	srcs/philo/main.c \
+
+SRCS	+= $(U_SRCS)
+U_SRCS	:= \
+
+SRCS	+= $(D_SRCS)
+D_SRCS	:= \
+
+INCS	:= \
+	includes \
+	$(dir $(LIBFT))/includes \
+
+LIBS	:= \
+	$(LIBFT) \
+
+# **************************************************************************** #
+
+OBJDIR	= objs/
+OBJS	= $(patsubst %.c,$(OBJDIR)%.o, $(notdir $(SRCS)))
+DEPS	= $(OBJS:.o=.d)
+CFLAGS	+= $(addprefix -I,$(INCS))
+LDFLAGS	+= $(addprefix -L,$(dir $(LIBS)))
+vpath %.c $(sort $(dir $(SRCS)))
+
+GR	= \033[32;1m
+RE	= \033[31;1m
+YE	= \033[33;1m
+CY	= \033[36;1m
+RC	= \033[0m
+
+# **************************************************************************** #
+
+all: $(NAME)
+
+$(NAME): $(LIBS) $(OBJDIR) $(OBJS)
+	@printf "\n$(GR)=== Compiled [$(CC) $(CFLAGS)] ==="
+	@printf "\n--- $(notdir $(SRCS))$(RC)\n"
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(LDFLAGS) -o $@
+	@printf "$(YE)&&& Linked [$(CC) $(LDFLAGS)] &&&\n--- $(NAME)$(RC)\n"
+
+-include $(DEPS)
+
+$(OBJDIR):
+	@mkdir -p $(OBJDIR)
+
+$(OBJDIR)%.o: %.c
+	@$(CC) $(CFLAGS) -c -o $@ $<
+	@printf "$(GR)+$(RC)"
+
+$(LIBFT):
+	@printf "\n$(CY)~~~ Preparing $@ ~~~\n$(RC)"
+	@make -C $(dir $(LIBFT))
+
+mostlyclean:
+	@printf "$(RE)--- Removing $(OBJDIR)$(RC)\n"
+	@$(RM) -r $(OBJDIR)
+
+clean: mostlyclean
+	@printf "$(RE)--- Removing $(LIBFT)$(RC)\n"
+	@make -C $(dir $(LIBFT)) fclean
+
+fclean: clean
+	@printf "$(RE)--- Removing $(NAME)$(RC)\n"
+	@$(RM) $(NAME)
+
+re: fclean all
+
+bonus: all
+
+.PHONY: all mostlyclean clean fclean re bonus
+
+# **************************************************************************** #
