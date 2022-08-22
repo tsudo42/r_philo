@@ -29,6 +29,7 @@ def get_body(dirname, acro=None):
 def update_makefile():
 	with open("Makefile", mode='w') as fobj:
 		fobj.write(MAKEFILE_PART1)
+		fobj.writelines(get_body("system"))
 		fobj.writelines(get_body("philo"))
 		fobj.writelines(get_body("utils"))
 		fobj.writelines(get_body("debug"))

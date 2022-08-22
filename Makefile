@@ -24,9 +24,12 @@ endif
 
 # **************************************************************************** #
 
+SRCS	+= $(S_SRCS)
+S_SRCS	:= \
+	srcs/system/main.c \
+
 SRCS	+= $(P_SRCS)
 P_SRCS	:= \
-	srcs/philo/main.c \
 
 SRCS	+= $(U_SRCS)
 U_SRCS	:= \
