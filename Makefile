@@ -13,7 +13,7 @@
 NAME	:= philo
 CC		:= gcc
 CFLAGS	:= -Wall -Wextra -Werror -MMD -MP -O0
-LDFLAGS	:=
+LDFLAGS	:= -lpthread
 RM		:= rm -f
 LIBFT	:= libft/libft.a
 UNAME	:= $(shell uname)
