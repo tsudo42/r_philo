@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   debug_print.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsudo <tsudo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,19 +10,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "system.h"
+#include "utils.h"
 
-int	main(int argc, char **argv)
+int	debug_write(const char *str)
 {
-	t_data	data;
+	if (MY_DEBUG)
+	{
+		return (write(STDERR_FILENO, str, ft_strlen(str)));
+	}
+	return (0);
+}
 
-	if (ready(&data, argc, argv) != 0)
-		return (1);
-	launch(&data);
-	debug_write("launched!\n");
-	pthread_mutex_lock(&data.system_active);
-	pthread_mutex_unlock(&data.system_active);
-	cleanup(&data);
-	debug_write("checking leaks...\n");
+int	debug_locked_write(const char *str, pthread_mutex_t *mutex)
+{
+	int	ret;
+
+	if (MY_DEBUG)
+	{
+		pthread_mutex_unlock(mutex);
+		ret = write(STDERR_FILENO, str, ft_strlen(str));
+		pthread_mutex_lock(mutex);
+		return (ret);
+	}
 	return (0);
 }

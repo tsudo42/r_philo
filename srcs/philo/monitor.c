@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsudo <tsudo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,19 +10,33 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "system.h"
+#include "philo.h"
 
-int	main(int argc, char **argv)
+void	*monitor(void *ptr)
 {
-	t_data	data;
+	t_philo	*philo;
+	long	time;
 
-	if (ready(&data, argc, argv) != 0)
-		return (1);
-	launch(&data);
-	debug_write("launched!\n");
-	pthread_mutex_lock(&data.system_active);
-	pthread_mutex_unlock(&data.system_active);
-	cleanup(&data);
-	debug_write("checking leaks...\n");
-	return (0);
+	philo = ptr;
+	usleep(philo->arg->time_to_die * 500);
+	while (1)
+	{
+		pthread_mutex_lock(philo->state_lock);
+		if (philo->state)
+			break ;
+		time = get_time();
+		if (philo->last_eat < time && philo->starve_time < time)
+		{
+			print_state(philo, DIED);
+			philo->state = STARVED;
+		}
+		if (philo->arg->num_to_eat > 0 && \
+			philo->arg->num_to_eat <= philo->eat_count)
+			philo->state = END;
+		pthread_mutex_unlock(philo->state_lock);
+		usleep(5000);
+	}
+	philo->state = END;
+	pthread_mutex_unlock(philo->state_lock);
+	return (NULL);
 }

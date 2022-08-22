@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   system.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsudo <tsudo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,19 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "system.h"
+#ifndef SYSTEM_H
+# define SYSTEM_H
 
-int	main(int argc, char **argv)
-{
-	t_data	data;
+# include "defs.h"
+# include "philo.h"
+# include "utils.h"
 
-	if (ready(&data, argc, argv) != 0)
-		return (1);
-	launch(&data);
-	debug_write("launched!\n");
-	pthread_mutex_lock(&data.system_active);
-	pthread_mutex_unlock(&data.system_active);
-	cleanup(&data);
-	debug_write("checking leaks...\n");
-	return (0);
-}
+int		ready(t_data *data, int argc, char **argv);
+int		launch(t_data *data);
+int		cleanup_mutex(t_data *data);
+int		cleanup(t_data *data);
+
+#endif /* SYSTEM_H */

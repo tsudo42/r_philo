@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   get_time.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsudo <tsudo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,19 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "system.h"
+#include "utils.h"
 
-int	main(int argc, char **argv)
+unsigned long	get_time(void)
 {
-	t_data	data;
+	static struct timeval	tv;
 
-	if (ready(&data, argc, argv) != 0)
-		return (1);
-	launch(&data);
-	debug_write("launched!\n");
-	pthread_mutex_lock(&data.system_active);
-	pthread_mutex_unlock(&data.system_active);
-	cleanup(&data);
-	debug_write("checking leaks...\n");
-	return (0);
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * (unsigned long)1000) + (tv.tv_usec / 1000));
 }

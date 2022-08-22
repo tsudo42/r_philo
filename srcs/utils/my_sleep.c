@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   my_sleep.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsudo <tsudo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,19 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "system.h"
+#include "utils.h"
 
-int	main(int argc, char **argv)
+void	my_sleep(unsigned long ms)
 {
-	t_data	data;
+	unsigned long	endtime;
 
-	if (ready(&data, argc, argv) != 0)
-		return (1);
-	launch(&data);
-	debug_write("launched!\n");
-	pthread_mutex_lock(&data.system_active);
-	pthread_mutex_unlock(&data.system_active);
-	cleanup(&data);
-	debug_write("checking leaks...\n");
-	return (0);
+	endtime = get_time() + ms;
+	while (endtime >= get_time())
+		usleep(50);
 }

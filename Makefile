@@ -26,13 +26,21 @@ endif
 
 SRCS	+= $(S_SRCS)
 S_SRCS	:= \
+	srcs/system/ready.c \
+	srcs/system/launch.c \
 	srcs/system/main.c \
+	srcs/system/cleanup.c \
 
 SRCS	+= $(P_SRCS)
 P_SRCS	:= \
+	srcs/philo/monitor.c \
+	srcs/philo/philo_loop.c \
 
 SRCS	+= $(U_SRCS)
 U_SRCS	:= \
+	srcs/utils/debug_print.c \
+	srcs/utils/my_sleep.c \
+	srcs/utils/get_time.c \
 
 SRCS	+= $(D_SRCS)
 D_SRCS	:= \
