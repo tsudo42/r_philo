@@ -80,17 +80,21 @@ $(OBJDIR)%.o: %.c
 	@$(CC) $(CFLAGS) -c -o $@ $<
 	@printf "$(GR)+$(RC)"
 
+ifdef $(LIBFT)
 $(LIBFT):
 	@printf "\\n$(CY)~~~ Preparing $@ ~~~\\n$(RC)"
 	@make -C $(dir $(LIBFT))
+endif
 
 mostlyclean:
 	@printf "$(RE)--- Removing $(OBJDIR)$(RC)\\n"
 	@$(RM) -r $(OBJDIR)
 
 clean: mostlyclean
+ifdef $(LIBFT)
 	@printf "$(RE)--- Removing $(LIBFT)$(RC)\\n"
 	@make -C $(dir $(LIBFT)) fclean
+endif
 
 fclean: clean
 	@printf "$(RE)--- Removing $(NAME)$(RC)\\n"
