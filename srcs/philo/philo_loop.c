@@ -80,7 +80,8 @@ void	*philo_loop(void *ptr)
 	philo->last_eat = get_time();
 	philo->starve_time = philo->last_eat + philo->arg->time_to_die;
 	print_state(philo, THINKING);
-	if (pthread_create(&monitor_thread, NULL, monitor, philo) != 0)
+	if (pthread_create(&monitor_thread, NULL, monitor, philo) != 0 || \
+		pthread_detach(monitor_thread) != 0)
 	{
 		philo->state = PTHREAD_ERR;
 		print_state(philo, DIED);
@@ -93,6 +94,5 @@ void	*philo_loop(void *ptr)
 		my_sleep(philo->arg->time_to_sleep);
 		print_state(philo, THINKING);
 	}
-	pthread_join(monitor_thread, NULL);
 	return (NULL);
 }
