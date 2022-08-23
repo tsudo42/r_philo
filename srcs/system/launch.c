@@ -58,7 +58,7 @@ int	launch_even(t_data *data, int num_philo)
 
 long	calc_wait_time(int num_philo, t_arg arg)
 {
-	return (arg.time_to_eat / (num_philo / 2));
+	return (1000 * arg.time_to_eat / (num_philo / 2));
 }
 
 int	launch_odd(t_data *data, int num_philo)
@@ -71,7 +71,7 @@ int	launch_odd(t_data *data, int num_philo)
 	while (i < num_philo)
 	{
 		launch_philo(data, &(data->philo[i]));
-		my_sleep(time_to_wait);
+		my_usleep(time_to_wait);
 		i += 2;
 	}
 	usleep(500);

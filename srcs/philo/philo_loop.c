@@ -68,7 +68,7 @@ static int	eat(t_philo *philo)
 	print_state(philo, EAT);
 	pthread_mutex_unlock(philo->state_lock);
 	\
-	my_sleep(philo->arg->time_to_eat);
+	my_usleep(philo->arg->time_to_eat * 1000);
 	pthread_mutex_unlock(philo->fork_second);
 	pthread_mutex_unlock(philo->fork_first);
 	return (0);
@@ -94,7 +94,7 @@ void	*philo_loop(void *ptr)
 	{
 		eat(philo);
 		print_state(philo, SLEEP);
-		my_sleep(philo->arg->time_to_sleep);
+		my_usleep(philo->arg->time_to_sleep * 1000);
 		print_state(philo, THINKING);
 	}
 	return (NULL);

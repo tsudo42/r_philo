@@ -38,8 +38,8 @@ P_SRCS	:= \
 
 SRCS	+= $(U_SRCS)
 U_SRCS	:= \
+	srcs/utils/my_usleep.c \
 	srcs/utils/debug_print.c \
-	srcs/utils/my_sleep.c \
 	srcs/utils/get_time.c \
 
 SRCS	+= $(D_SRCS)

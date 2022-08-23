@@ -16,7 +16,7 @@
 # include "defs.h"
 
 unsigned long	get_time(void);
-void			my_sleep(unsigned long ms);
+void			my_usleep(unsigned long us);
 int				debug_write(const char *str);
 int				debug_locked_write(const char *str, pthread_mutex_t *mutex);
 
