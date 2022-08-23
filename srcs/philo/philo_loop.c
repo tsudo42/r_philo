@@ -35,7 +35,7 @@ void	print_state(t_philo *philo, t_action action)
 		if (action == DIED)
 			is_end = 1;
 	}
-	else
+	else if (philo->state == ALIVE)
 		philo->state = END;
 	pthread_mutex_unlock(philo->printer);
 }
@@ -58,6 +58,7 @@ static int	eat(t_philo *philo)
 	print_state(philo, TAKE_FORK);
 	pthread_mutex_lock(philo->fork_second);
 	print_state(philo, TAKE_FORK);
+	\
 	pthread_mutex_lock(philo->state_lock);
 	time = get_time();
 	philo->last_eat = time + philo->arg->time_to_eat;
@@ -65,6 +66,7 @@ static int	eat(t_philo *philo)
 	philo->eat_count++;
 	print_state(philo, EAT);
 	pthread_mutex_unlock(philo->state_lock);
+	\
 	my_sleep(philo->arg->time_to_eat);
 	pthread_mutex_unlock(philo->fork_second);
 	pthread_mutex_unlock(philo->fork_first);

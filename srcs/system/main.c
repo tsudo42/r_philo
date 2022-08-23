@@ -12,17 +12,29 @@
 
 #include "system.h"
 
+#if DEBUG
+int	debug_check_leak(void)
+{
+	debug_write("checking leaks...\n");
+	return (system("leaks philo"));
+}
+#else /* DEBUG*/
+int	debug_check_leak(void)
+{
+	return (0);
+}
+#endif /* DEBUG*/
+
 int	main(int argc, char **argv)
 {
 	t_data	data;
+	int		ret;
 
 	if (ready(&data, argc, argv) != 0)
 		return (1);
 	launch(&data);
 	debug_write("launched!\n");
-	pthread_mutex_lock(&data.system_active);
-	pthread_mutex_unlock(&data.system_active);
-	cleanup(&data);
-	debug_write("checking leaks...\n");
-	return (0);
+	ret = cleanup(&data);
+	debug_check_leak();
+	return (ret);
 }

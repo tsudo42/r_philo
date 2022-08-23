@@ -68,7 +68,6 @@ int	ready_mutex(t_data *data)
 		i++;
 	}
 	pthread_mutex_init(&data->printer, NULL);
-	pthread_mutex_init(&data->system_active, NULL);
 	if (errno != 0)
 	{
 		perror("mutex");
@@ -100,7 +99,6 @@ void	setup_philo(t_data *data)
 			data->philo[i].fork_first = &(data->fork[i + 1]);
 		\
 		data->philo[i].printer = &data->printer;
-		data->philo[i].system = &data->system_active;
 		data->philo[i].arg = &data->arg;
 		i++;
 	}

@@ -47,7 +47,6 @@ int	cleanup_mutex(t_data *data)
 		i++;
 	}
 	pthread_mutex_destroy(&(data->printer));
-	pthread_mutex_destroy(&(data->system_active));
 	debug_write("cleaned!\n");
 	return (0);
 }
@@ -73,6 +72,5 @@ int	cleanup(t_data *data)
 {
 	join_philo(data);
 	cleanup_mutex(data);
-	print_error(data);
-	return (0);
+	return (print_error(data));
 }

@@ -68,7 +68,6 @@ typedef struct s_philo
 	pthread_mutex_t	*fork_first;
 	pthread_mutex_t	*fork_second;
 	pthread_mutex_t	*printer;
-	pthread_mutex_t	*system;
 	t_arg			*arg;
 }	t_philo;
 
@@ -79,7 +78,6 @@ typedef struct s_data
 	pthread_mutex_t	philo_state[MAX_PHILO];
 	pthread_mutex_t	fork[MAX_PHILO];
 	pthread_mutex_t	printer;
-	pthread_mutex_t	system_active;
 }	t_data;
 
 #endif /* DEFS_H */
