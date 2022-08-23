@@ -88,18 +88,17 @@ void	setup_philo(t_data *data)
 		data->philo[i].index = i + 1;
 		data->philo[i].state = UNLAUNCHED;
 		data->philo[i].state_lock = &(data->philo_state[i]);
-		data->philo[i].fork_first = &(data->fork[i]);
-		data->philo[i].fork_second = &(data->fork[0]);
-		else if (i != data->arg.num_philo - 1 && i % 2 == 0)
+		\
+		data->philo[i].fork_first = &(data->fork[0]);
+		data->philo[i].fork_second = &(data->fork[i]);
+		if (i != data->arg.num_philo - 1 && i % 2 == 0)
 		{
 			data->philo[i].fork_first = &(data->fork[i]);
 			data->philo[i].fork_second = &(data->fork[i + 1]);
 		}
 		else if (i != data->arg.num_philo - 1)
-		{
 			data->philo[i].fork_first = &(data->fork[i + 1]);
-			data->philo[i].fork_second = &(data->fork[i]);
-		}
+		\
 		data->philo[i].printer = &data->printer;
 		data->philo[i].system = &data->system_active;
 		data->philo[i].arg = &data->arg;
