@@ -12,23 +12,6 @@
 
 #include "system.h"
 
-#if MY_DEBUG
-
-int	debug_check_leak(void)
-{
-	debug_write("checking leaks...\n");
-	return (system("leaks philo"));
-}
-
-#else /* DEBUG*/
-
-int	debug_check_leak(void)
-{
-	return (0);
-}
-
-#endif /* DEBUG*/
-
 int	main(int argc, char **argv)
 {
 	t_data	data;
@@ -39,6 +22,5 @@ int	main(int argc, char **argv)
 	launch(&data);
 	debug_write("launched!\n");
 	ret = cleanup(&data);
-	debug_check_leak();
 	return (ret);
 }

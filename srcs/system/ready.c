@@ -70,7 +70,6 @@ int	ready_mutex(t_data *data)
 	pthread_mutex_init(&data->printer, NULL);
 	if (errno != 0)
 	{
-		perror("mutex");
 		cleanup_mutex(data);
 		return (-1);
 	}
