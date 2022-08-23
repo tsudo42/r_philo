@@ -22,7 +22,7 @@ void	*monitor(void *ptr)
 	while (1)
 	{
 		pthread_mutex_lock(philo->state_lock);
-		if (philo->state)
+		if (philo->state != ALIVE)
 			break ;
 		time = get_time();
 		if (philo->last_eat < time && philo->starve_time < time)

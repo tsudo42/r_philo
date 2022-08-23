@@ -12,6 +12,7 @@
 
 #include "philo.h"
 
+/* philo->state_lock should be locked upon print_state() call. */
 void	print_state(t_philo *philo, t_action action)
 {
 	static long	start_time = -1;
@@ -40,12 +41,12 @@ void	print_state(t_philo *philo, t_action action)
 	pthread_mutex_unlock(philo->printer);
 }
 
-static int	check_end(t_philo *philo)
+static int	check_alive(t_philo *philo)
 {
 	int	ret;
 
 	pthread_mutex_lock(philo->state_lock);
-	ret = (philo->state != ALIVE);
+	ret = (philo->state == ALIVE);
 	pthread_mutex_unlock(philo->state_lock);
 	return (ret);
 }
@@ -89,7 +90,7 @@ void	*philo_loop(void *ptr)
 		print_state(philo, DIED);
 		return (NULL);
 	}
-	while (!check_end(philo))
+	while (check_alive(philo))
 	{
 		eat(philo);
 		print_state(philo, SLEEP);
