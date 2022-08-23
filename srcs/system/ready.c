@@ -63,9 +63,12 @@ int	ready_sem(t_data *data)
 
 	num_philo = data->arg.num_philo;
 	errno = 0;
-	data->sem.sem_state = sem_open(SEM_STATE_NAME, O_CREAT, 0644, 0);
-	data->sem.sem_fork = sem_open(SEM_FORK_NAME, O_CREAT, 0644, num_philo);
-	data->sem.sem_printer = sem_open(SEM_PRINTER_NAME, O_CREAT, 0644, 1);
+	data->sem.sem_state = \
+		sem_open(SEM_STATE_NAME, O_CREAT | O_EXCL, 0644, 0);
+	data->sem.sem_fork = \
+		sem_open(SEM_FORK_NAME, O_CREAT | O_EXCL, 0644, num_philo);
+	data->sem.sem_printer = \
+		sem_open(SEM_PRINTER_NAME, O_CREAT | O_EXCL, 0644, 1);
 	if (errno != 0)
 	{
 		write(STDERR_FILENO, ERRMSG_SEM, ft_strlen(ERRMSG_SEM));
