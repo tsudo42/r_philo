@@ -12,7 +12,7 @@
 
 #include "system.h"
 
-#if DEBUG
+#if MY_DEBUG
 
 int	debug_check_leak(void)
 {
