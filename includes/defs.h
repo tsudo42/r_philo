@@ -22,14 +22,14 @@
 # include <string.h>
 # include <limits.h>
 
-# define MAX_PHILO 200
+# define MAX_PHILO 256
 
 # define ERRMSG_INVAL	"invalid argument\n"
 # define ERRMSG_TOOBIG	"argument too big\n"
 # define ERRMSG_MUTEX	"error on mutex\n"
 # define ERRMSG_PTHREAD	"error on pthread\n"
 
-# define MY_DEBUG 1
+# define MY_DEBUG 0
 
 typedef enum e_action {
 	TAKE_FORK	= 0,
