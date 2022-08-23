@@ -34,7 +34,9 @@ S_SRCS	:= \
 SRCS	+= $(P_SRCS)
 P_SRCS	:= \
 	srcs/philo/monitor.c \
+	srcs/philo/my_usleep.c \
 	srcs/philo/philo_loop.c \
+	srcs/philo/get_time.c \
 
 SRCS	+= $(U_SRCS)
 U_SRCS	:= \
@@ -42,15 +44,13 @@ U_SRCS	:= \
 	srcs/utils/ft_strtol.c \
 	srcs/utils/ft_strlen.c \
 	srcs/utils/ft_isxdigit.c \
-	srcs/utils/my_usleep.c \
-	srcs/utils/debug_print.c \
 	srcs/utils/ft_islower.c \
 	srcs/utils/ft_isupper.c \
-	srcs/utils/get_time.c \
 	srcs/utils/ft_isspace.c \
 
 SRCS	+= $(D_SRCS)
 D_SRCS	:= \
+	srcs/debug/debug_print.c \
 
 INCS	:= \
 	includes \

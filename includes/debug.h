@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   my_usleep.c                                        :+:      :+:    :+:   */
+/*   debug.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsudo <tsudo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,26 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#ifndef DEBUG_H
+# define DEBUG_H
 
-void	my_usleep(unsigned long us)
-{
-	struct timeval	now;
-	struct timeval	end;
+# include "defs.h"
 
-	gettimeofday(&end, NULL);
-	end.tv_usec += us;
-	if (end.tv_usec >= 1000000)
-	{
-		end.tv_sec += (end.tv_usec / 1000000);
-		end.tv_usec = end.tv_usec % 1000000;
-	}
-	while (1)
-	{
-		gettimeofday(&now, NULL);
-		if (now.tv_sec > end.tv_sec || \
-		(now.tv_sec == end.tv_sec && now.tv_usec >= end.tv_usec))
-			return ;
-		usleep(50);
-	}
-}
+int				debug_write(const char *str);
+int				debug_locked_write(const char *str, pthread_mutex_t *mutex);
+
+#endif /* DEBUG_H */

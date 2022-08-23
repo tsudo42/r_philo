@@ -16,6 +16,7 @@
 # include "defs.h"
 # include "philo.h"
 # include "utils.h"
+# include "debug.h"
 
 int		ready(t_data *data, int argc, char **argv);
 int		launch(t_data *data);

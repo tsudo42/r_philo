@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "philo.h"
 
 unsigned long	get_time(void)
 {

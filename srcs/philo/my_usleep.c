@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   my_usleep.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsudo <tsudo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,17 +10,26 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#include "philo.h"
 
-# include "defs.h"
+void	my_usleep(unsigned long us)
+{
+	struct timeval	now;
+	struct timeval	end;
 
-int				ft_isdigit(int c);
-int				ft_islower(int c);
-int				ft_isspace(int c);
-int				ft_isupper(int c);
-int				ft_isxdigit(int c);
-long			ft_strtol(const char *str, char **endptr, int base);
-size_t			ft_strlen(const char *s);
-
-#endif /* UTILS_H */
+	gettimeofday(&end, NULL);
+	end.tv_usec += us;
+	if (end.tv_usec >= 1000000)
+	{
+		end.tv_sec += (end.tv_usec / 1000000);
+		end.tv_usec = end.tv_usec % 1000000;
+	}
+	while (1)
+	{
+		gettimeofday(&now, NULL);
+		if (now.tv_sec > end.tv_sec || \
+		(now.tv_sec == end.tv_sec && now.tv_usec >= end.tv_usec))
+			return ;
+		usleep(50);
+	}
+}
