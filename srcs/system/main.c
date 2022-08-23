@@ -13,16 +13,20 @@
 #include "system.h"
 
 #if DEBUG
+
 int	debug_check_leak(void)
 {
 	debug_write("checking leaks...\n");
 	return (system("leaks philo"));
 }
+
 #else /* DEBUG*/
+
 int	debug_check_leak(void)
 {
 	return (0);
 }
+
 #endif /* DEBUG*/
 
 int	main(int argc, char **argv)

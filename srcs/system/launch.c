@@ -12,7 +12,7 @@
 
 #include "system.h"
 
-int set_start_delay(t_data *data, int num_philo)
+int	set_start_delay(t_data *data, int num_philo)
 {
 	int	i;
 
