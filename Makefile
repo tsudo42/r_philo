@@ -15,7 +15,7 @@ CC		:= gcc
 CFLAGS	:= -Wall -Wextra -Werror -MMD -MP -O0
 LDFLAGS	:= -lpthread
 RM		:= rm -f
-LIBFT	:= libft/libft.a
+LIBFT	:=
 UNAME	:= $(shell uname)
 
 ifeq ($(DEBUG), 1)
@@ -38,9 +38,16 @@ P_SRCS	:= \
 
 SRCS	+= $(U_SRCS)
 U_SRCS	:= \
+	srcs/utils/ft_isdigit.c \
+	srcs/utils/ft_strtol.c \
+	srcs/utils/ft_strlen.c \
+	srcs/utils/ft_isxdigit.c \
 	srcs/utils/my_usleep.c \
 	srcs/utils/debug_print.c \
+	srcs/utils/ft_islower.c \
+	srcs/utils/ft_isupper.c \
 	srcs/utils/get_time.c \
+	srcs/utils/ft_isspace.c \
 
 SRCS	+= $(D_SRCS)
 D_SRCS	:= \

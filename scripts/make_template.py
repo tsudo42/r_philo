@@ -28,7 +28,7 @@ CC		:= gcc
 CFLAGS	:= -Wall -Wextra -Werror -MMD -MP -O0
 LDFLAGS	:= -lpthread
 RM		:= rm -f
-LIBFT	:= libft/libft.a
+LIBFT	:=
 UNAME	:= $(shell uname)
 
 ifeq ($(DEBUG), 1)

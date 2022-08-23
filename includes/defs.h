@@ -21,7 +21,6 @@
 # include <unistd.h>
 # include <string.h>
 # include <limits.h>
-# include "libft.h"
 
 # define MAX_PHILO 200
 
