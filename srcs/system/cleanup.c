@@ -15,40 +15,45 @@
 int	join_philo(t_data *data)
 {
 	int	i;
+	int	state;
 
 	debug_write("joining philo...\n");
 	i = 0;
 	while (i < data->arg.num_philo)
 	{
-		pthread_mutex_lock(data->philo[i].state_lock);
-		if (data->philo[i].state == UNLAUNCHED)
+		if (data->philo[i].state != UNLAUNCHED && data->philo[i].pid > 0)
+			kill(data->philo[i].pid, SIGKILL);
+		i++;
+	}
+	i = 0;
+	while (i < data->arg.num_philo)
+	{
+		if (data->philo[i].state != UNLAUNCHED)
 		{
-			i++;
-			continue ;
+			waitpid(data->philo[i].pid, &state, WUNTRACED);
+			data->philo[i].state = state;
 		}
-		pthread_mutex_unlock(data->philo[i].state_lock);
-		pthread_join(data->philo[i++].thread, NULL);
 		i++;
 	}
 	debug_write("joined!\n");
 	return (0);
 }
 
-int	cleanup_mutex(t_data *data)
+int	cleanup_sem(t_data *data)
 {
-	int	i;
+	int	ret;
 
-	debug_write("cleaning mutex up...\n");
-	i = 0;
-	while (i < data->arg.num_philo)
-	{
-		pthread_mutex_destroy(&(data->philo_state[i]));
-		pthread_mutex_destroy(&(data->fork[i]));
-		i++;
-	}
-	pthread_mutex_destroy(&(data->printer));
-	debug_write("cleaned!\n");
-	return (0);
+	ret = 0;
+	if (data->sem.sem_state)
+		ret |= sem_close(data->sem.sem_state);
+	if (data->sem.sem_fork)
+		ret |= sem_close(data->sem.sem_fork);
+	if (data->sem.sem_printer)
+		ret |= sem_close(data->sem.sem_printer);
+	ret |= sem_unlink(SEM_STATE_NAME);
+	ret |= sem_unlink(SEM_FORK_NAME);
+	ret |= sem_unlink(SEM_PRINTER_NAME);
+	return (ret);
 }
 
 int	print_error(t_data *data)
@@ -71,6 +76,6 @@ int	print_error(t_data *data)
 int	cleanup(t_data *data)
 {
 	join_philo(data);
-	cleanup_mutex(data);
+	cleanup_sem(data);
 	return (print_error(data));
 }

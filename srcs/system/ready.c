@@ -52,26 +52,25 @@ int	set_arg(t_arg *arg, int argc, char **argv)
 		arg->num_to_eat = get_num(argv[5], 0, INT_MAX / 100000, &is_error);
 	else
 		arg->num_to_eat = -1;
-	return (is_error);
+	if (is_error)
+		exit(1);
+	return (0);
 }
 
-int	ready_mutex(t_data *data)
+int	ready_sem(t_data *data)
 {
-	int	i;
+	int	num_philo;
 
+	num_philo = data->arg.num_philo;
 	errno = 0;
-	i = 0;
-	while (i < data->arg.num_philo)
-	{
-		pthread_mutex_init(&(data->philo_state[i]), NULL);
-		pthread_mutex_init(&(data->fork[i]), NULL);
-		i++;
-	}
-	pthread_mutex_init(&data->printer, NULL);
+	data->sem.sem_state = sem_open(SEM_STATE_NAME, O_CREAT, 0644, 0);
+	data->sem.sem_fork = sem_open(SEM_FORK_NAME, O_CREAT, 0644, num_philo);
+	data->sem.sem_printer = sem_open(SEM_PRINTER_NAME, O_CREAT, 0644, 1);
 	if (errno != 0)
 	{
-		cleanup_mutex(data);
-		return (-1);
+		write(STDERR_FILENO, ERRMSG_SEM, ft_strlen(ERRMSG_SEM));
+		cleanup_sem(data);
+		exit(1);
 	}
 	return (0);
 }
@@ -85,20 +84,8 @@ void	setup_philo(t_data *data)
 	{
 		data->philo[i].index = i + 1;
 		data->philo[i].state = UNLAUNCHED;
-		data->philo[i].state_lock = &(data->philo_state[i]);
-		\
-		data->philo[i].fork_first = &(data->fork[0]);
-		data->philo[i].fork_second = &(data->fork[i]);
-		if (i != data->arg.num_philo - 1 && i % 2 == 0)
-		{
-			data->philo[i].fork_first = &(data->fork[i]);
-			data->philo[i].fork_second = &(data->fork[i + 1]);
-		}
-		else if (i != data->arg.num_philo - 1)
-			data->philo[i].fork_first = &(data->fork[i + 1]);
-		\
-		data->philo[i].printer = &data->printer;
 		data->philo[i].arg = &data->arg;
+		data->philo[i].sem = &data->sem;
 		i++;
 	}
 }
@@ -106,13 +93,8 @@ void	setup_philo(t_data *data)
 int	ready(t_data *data, int argc, char **argv)
 {
 	memset(data, 0, sizeof(t_data));
-	if (set_arg(&data->arg, argc, argv) != 0)
-		return (-1);
-	if (ready_mutex(data) != 0)
-	{
-		write(STDERR_FILENO, ERRMSG_MUTEX, ft_strlen(ERRMSG_MUTEX));
-		return (-1);
-	}
+	set_arg(&data->arg, argc, argv);
+	ready_sem(data);
 	setup_philo(data);
 	return (0);
 }

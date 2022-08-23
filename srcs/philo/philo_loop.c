@@ -15,8 +15,6 @@
 /* philo->state_lock should be locked upon print_state() call. */
 void	print_state(t_philo *philo, t_action action)
 {
-	static long	start_time = -1;
-	static int	is_end = 0;
 	const char	*strs[] = {
 		"%lu %d has taken a fork\n",
 		"%lu %d is eating\n",
@@ -25,20 +23,11 @@ void	print_state(t_philo *philo, t_action action)
 		"%lu %d died\n",
 	};
 
-	pthread_mutex_lock(philo->printer);
-	if (philo->state == STARVED || philo->state == PTHREAD_ERR)
-		is_end = 1;
-	if (!is_end)
-	{
-		if (start_time < 0)
-			start_time = get_time();
-		printf(strs[action], get_time() - start_time, philo->index);
-		if (action == DIED)
-			is_end = 1;
-	}
-	else if (philo->state == ALIVE)
-		philo->state = END;
-	pthread_mutex_unlock(philo->printer);
+	sem_wait(philo->sem->sem_printer);
+	printf(strs[action], get_time() - philo->start_time, philo->index);
+	if (action == DIED)
+		return ;
+	sem_post(philo->sem->sem_printer);
 }
 
 static int	start(t_philo *philo)
@@ -50,9 +39,7 @@ static int	start(t_philo *philo)
 	if (pthread_create(&monitor_thread, NULL, monitor, philo) != 0 || \
 		pthread_detach(monitor_thread) != 0)
 	{
-		philo->state = PTHREAD_ERR;
-		print_state(philo, DIED);
-		return (-1);
+		exit(PTHREAD_ERR);
 	}
 	if (philo->start_delay != 0)
 	{
@@ -66,9 +53,7 @@ static int	check_alive(t_philo *philo)
 {
 	int	ret;
 
-	pthread_mutex_lock(philo->state_lock);
 	ret = (philo->state == ALIVE);
-	pthread_mutex_unlock(philo->state_lock);
 	return (ret);
 }
 
@@ -76,32 +61,29 @@ static int	eat(t_philo *philo)
 {
 	long	time;
 
-	pthread_mutex_lock(philo->fork_first);
+	sem_wait(philo->sem->sem_fork);
 	print_state(philo, TAKE_FORK);
-	pthread_mutex_lock(philo->fork_second);
+	sem_wait(philo->sem->sem_fork);
 	print_state(philo, TAKE_FORK);
 	\
-	pthread_mutex_lock(philo->state_lock);
 	time = get_time();
 	philo->last_eat = time + philo->arg->time_to_eat;
 	philo->starve_time = time + philo->arg->time_to_die;
 	philo->eat_count++;
 	print_state(philo, EAT);
-	pthread_mutex_unlock(philo->state_lock);
 	\
 	my_usleep(philo->arg->time_to_eat * 1000);
-	pthread_mutex_unlock(philo->fork_second);
-	pthread_mutex_unlock(philo->fork_first);
+	sem_post(philo->sem->sem_fork);
+	sem_post(philo->sem->sem_fork);
 	return (0);
 }
 
-void	*philo_loop(void *ptr)
+void	philo_loop(void *ptr)
 {
 	t_philo		*philo;
 
 	philo = ptr;
-	if (start(philo) != 0)
-		return (NULL);
+	start(philo);
 	while (check_alive(philo))
 	{
 		eat(philo);
@@ -109,5 +91,5 @@ void	*philo_loop(void *ptr)
 		my_usleep(philo->arg->time_to_sleep * 1000);
 		print_state(philo, THINKING);
 	}
-	return (NULL);
+	exit(END);
 }

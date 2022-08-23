@@ -21,19 +21,15 @@ int	set_start_delay(t_data *data, int num_philo)
 	{
 		if (num_philo % 2 == 0)
 		{
-			if (i % 2 == 0)
+			if (i * 2 < num_philo)
 				data->philo[i].start_delay = 0;
 			else
-				data->philo[i].start_delay = 500;
+				data->philo[i].start_delay = 800 * data->arg.time_to_eat;
 		}
 		else
 		{
-			if (i % 2 == 0)
-				data->philo[i].start_delay = \
-					1000 * data->arg.time_to_eat * (i / 2) / (num_philo / 2);
-			else
-				data->philo[i].start_delay = \
-					1000 * data->arg.time_to_eat + 500;
+			data->philo[i].start_delay = \
+				1000 * data->arg.time_to_eat * 2 * i / num_philo;
 		}
 		i++;
 	}
@@ -42,30 +38,29 @@ int	set_start_delay(t_data *data, int num_philo)
 
 int	launch_philo(t_data *data, int num_philo)
 {
-	int		i;
-	t_philo	*philo;
+	int				i;
+	t_philo			*philo;
+	unsigned long	now;
 
+	now = get_time();
 	i = 0;
 	while (i < num_philo)
 	{
 		philo = &(data->philo[i]);
 		philo->state = ALIVE;
-		if (pthread_create(&philo->thread, NULL, philo_loop, philo) != 0)
+		philo->start_time = now;
+		philo->pid = fork();
+		if (philo->pid == 0)
+			philo_loop(philo);
+		if (philo->pid < 0)
+		{
+			philo->state = UNLAUNCHED;
 			break ;
+		}
 		i++;
 	}
 	if (i == num_philo)
 		return (0);
-	data->philo[i].state = UNLAUNCHED;
-	i = 0;
-	while (i < num_philo)
-	{
-		pthread_mutex_lock(data->philo[i].state_lock);
-		if (data->philo[i].state != UNLAUNCHED)
-			data->philo[i].state = PTHREAD_ERR;
-		pthread_mutex_unlock(data->philo[i].state_lock);
-		i++;
-	}
 	return (-1);
 }
 
