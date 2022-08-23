@@ -45,11 +45,11 @@ int	set_arg(t_arg *arg, int argc, char **argv)
 	}
 	is_error = 0;
 	arg->num_philo = get_num(argv[1], 1, MAX_PHILO, &is_error);
-	arg->time_to_die = get_num(argv[2], 0, 10000, &is_error);
-	arg->time_to_eat = get_num(argv[3], 0, 10000, &is_error);
-	arg->time_to_sleep = get_num(argv[4], 0, 10000, &is_error);
+	arg->time_to_die = get_num(argv[2], 0, INT_MAX / 100000, &is_error);
+	arg->time_to_eat = get_num(argv[3], 0, INT_MAX / 100000, &is_error);
+	arg->time_to_sleep = get_num(argv[4], 0, INT_MAX / 100000, &is_error);
 	if (argc == 6)
-		arg->num_to_eat = get_num(argv[5], 0, 10000, &is_error);
+		arg->num_to_eat = get_num(argv[5], 0, INT_MAX / 100000, &is_error);
 	else
 		arg->num_to_eat = -1;
 	return (is_error);
