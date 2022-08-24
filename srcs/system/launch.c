@@ -40,6 +40,22 @@ int	set_start_delay(t_data *data, int num_philo)
 	return (0);
 }
 
+int	launch_error(t_data *data, int num_philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < num_philo)
+	{
+		pthread_mutex_lock(data->philo[i].state_lock);
+		if (data->philo[i].state != UNLAUNCHED)
+			data->philo[i].state = PTHREAD_ERR;
+		pthread_mutex_unlock(data->philo[i].state_lock);
+		i++;
+	}
+	return (-1);
+}
+
 int	launch_philo(t_data *data, int num_philo)
 {
 	int		i;
@@ -51,22 +67,17 @@ int	launch_philo(t_data *data, int num_philo)
 		philo = &(data->philo[i]);
 		philo->state = ALIVE;
 		if (pthread_create(&philo->thread, NULL, philo_loop, philo) != 0)
+		{
+			philo->state = UNLAUNCHED;
 			break ;
+		}
 		i++;
 	}
-	if (i == num_philo)
+	if (i == num_philo && \
+		pthread_create(&data->monitor_thread, NULL, monitor, data) == 0 && \
+		pthread_detach(data->monitor_thread) == 0)
 		return (0);
-	data->philo[i].state = UNLAUNCHED;
-	i = 0;
-	while (i < num_philo)
-	{
-		pthread_mutex_lock(data->philo[i].state_lock);
-		if (data->philo[i].state != UNLAUNCHED)
-			data->philo[i].state = PTHREAD_ERR;
-		pthread_mutex_unlock(data->philo[i].state_lock);
-		i++;
-	}
-	return (-1);
+	return (launch_error(data, num_philo));
 }
 
 int	launch(t_data *data)

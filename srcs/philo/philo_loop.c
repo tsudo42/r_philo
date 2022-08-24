@@ -43,17 +43,8 @@ void	print_state(t_philo *philo, t_action action)
 
 static int	start(t_philo *philo)
 {
-	pthread_t	monitor_thread;
-
 	philo->last_eat = get_time();
 	philo->starve_time = philo->last_eat + philo->arg->time_to_die;
-	if (pthread_create(&monitor_thread, NULL, monitor, philo) != 0 || \
-		pthread_detach(monitor_thread) != 0)
-	{
-		philo->state = PTHREAD_ERR;
-		print_state(philo, DIED);
-		return (-1);
-	}
 	if (philo->start_delay != 0)
 	{
 		print_state(philo, THINKING);
