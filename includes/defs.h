@@ -31,7 +31,7 @@
 # define ERRMSG_SEM		"error on semaphore\n"
 # define ERRMSG_ANY		"fatal error\n"
 
-# define MY_DEBUG 1
+# define MY_DEBUG 0
 
 typedef enum e_action {
 	TAKE_FORK	= 0,
