@@ -44,7 +44,7 @@ void	*monitor(void *ptr)
 	{
 		if (check(philo))
 			break ;
-		usleep(5000);
+		usleep(800);
 	}
 	sem_post(philo->sem->sem_state);
 	return (NULL);
