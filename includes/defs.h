@@ -29,9 +29,9 @@
 # define ERRMSG_INVAL	"invalid argument\n"
 # define ERRMSG_TOOBIG	"argument too big\n"
 # define ERRMSG_SEM		"error on semaphore\n"
-# define ERRMSG_PTHREAD	"error on pthread\n"
+# define ERRMSG_ANY		"fatal error\n"
 
-# define MY_DEBUG 0
+# define MY_DEBUG 1
 
 typedef enum e_action {
 	TAKE_FORK	= 0,
@@ -47,7 +47,7 @@ typedef enum e_state {
 	OVER		= 2,
 	KILLED		= 3,
 	NOT_RUNNING	= 4,
-	PTHREAD_ERR	= 5
+	ANY_ERROR	= 5
 }	t_state;
 
 typedef struct s_arg{

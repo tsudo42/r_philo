@@ -12,26 +12,56 @@
 
 #include "system.h"
 
-int	join_philo(t_data *data)
+int	collect_philo(t_data *data)
+{
+	int		state;
+	int		i;
+	pid_t	ret;
+
+	debug_write("collecting philo...\n");
+	i = 0;
+	ret = 0;
+	while (1)
+	{
+		if (i >= data->arg.num_philo)
+			i = 0;
+		ret = waitpid(data->philo[i].pid, &state, WNOHANG | WUNTRACED);
+		if (ret != 0)
+		{
+			if (WIFEXITED(state))
+				data->philo[i].state = WEXITSTATUS(state);
+			else if (WIFSIGNALED(state) && WTERMSIG(state) == SIGTERM)
+				data->philo[i].state = KILLED;
+			else
+				data->philo[i].state = ANY_ERROR;
+			if (data->philo[i].state != OVER || data->philo[i].state != KILLED)
+				return (0);
+		}
+	}
+}
+
+int	wait_philo(t_data *data)
 {
 	int	i;
 	int	state;
 
-	debug_write("joining philo...\n");
+	debug_write("killing philo...\n");
 	i = 0;
 	while (i < data->arg.num_philo)
 	{
-		if (data->philo[i].state != NOT_RUNNING && data->philo[i].pid > 0)
+		if (data->philo[i].state == ALIVE && data->philo[i].pid > 0)
 			kill(data->philo[i].pid, SIGTERM);
 		i++;
 	}
 	i = 0;
+	debug_write("joining philo...\n");
 	while (i < data->arg.num_philo)
 	{
-		if (data->philo[i].state != NOT_RUNNING)
+		if (data->philo[i].state == ALIVE)
 		{
-			waitpid(data->philo[i].pid, &state, WUNTRACED);
-			data->philo[i].state = state;
+			data->philo[i].state = KILLED;
+			if (waitpid(data->philo[i].pid, &state, WUNTRACED) < 0)
+				data->philo[i].state = ANY_ERROR;
 		}
 		i++;
 	}
@@ -63,9 +93,9 @@ int	print_error(t_data *data)
 	i = 0;
 	while (i < data->arg.num_philo)
 	{
-		if (data->philo[i].state == PTHREAD_ERR)
+		if (data->philo[i].state == ANY_ERROR)
 		{
-			write(STDERR_FILENO, ERRMSG_PTHREAD, ft_strlen(ERRMSG_PTHREAD));
+			write(STDERR_FILENO, ERRMSG_ANY, ft_strlen(ERRMSG_ANY));
 			return (-1);
 		}
 		i++;
@@ -75,7 +105,8 @@ int	print_error(t_data *data)
 
 int	cleanup(t_data *data)
 {
-	join_philo(data);
+	collect_philo(data);
+	wait_philo(data);
 	cleanup_sem(data);
 	return (print_error(data));
 }

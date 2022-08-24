@@ -20,7 +20,6 @@ int	main(int argc, char **argv)
 	ready(&data, argc, argv);
 	launch(&data);
 	debug_write("launched!\n");
-	sem_wait(data.sem.sem_state);
 	ret = cleanup(&data);
 	return (ret);
 }
