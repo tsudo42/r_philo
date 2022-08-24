@@ -65,7 +65,7 @@ int	ready_sem(t_data *data)
 	num_philo = data->arg.num_philo;
 	errno = 0;
 	data->sem.sem_fork = \
-		sem_open(SEM_FORK_NAME, O_CREAT | O_EXCL, 0644, num_philo);
+		sem_open(SEM_FORK_NAME, O_CREAT | O_EXCL, 0644, num_philo / 2);
 	data->sem.sem_waiter = \
 		sem_open(SEM_WAITER_NAME, O_CREAT | O_EXCL, 0644, 0);
 	data->sem.sem_printer = \

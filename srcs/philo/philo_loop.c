@@ -59,7 +59,6 @@ static int	eat(t_philo *philo)
 
 	sem_wait(philo->sem->sem_fork);
 	print_state(philo, TAKE_FORK);
-	sem_wait(philo->sem->sem_fork);
 	print_state(philo, TAKE_FORK);
 	\
 	time = get_time();
@@ -77,7 +76,6 @@ static int	eat(t_philo *philo)
 	print_state(philo, EAT);
 	\
 	monitoring_usleep(philo, philo->arg->time_to_eat * 1000);
-	sem_post(philo->sem->sem_fork);
 	sem_post(philo->sem->sem_fork);
 	return (0);
 }
