@@ -61,13 +61,11 @@ typedef struct s_arg{
 # define SEM_STATE_NAME		"/sem_state"
 # define SEM_FORK_NAME		"/sem_fork"
 # define SEM_PRINTER_NAME	"/sem_printer"
-# define SEM_MONITOR_NAME	"/sem_monitor"
 
 typedef struct s_sem_set {
 	sem_t			*sem_state;
 	sem_t			*sem_fork;
 	sem_t			*sem_printer;
-	sem_t			*sem_monitor;
 }	t_sem_set;
 
 typedef struct s_philo
