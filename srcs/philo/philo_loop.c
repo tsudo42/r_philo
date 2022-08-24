@@ -63,6 +63,8 @@ static int	eat(t_philo *philo)
 	print_state(philo, TAKE_FORK);
 	\
 	time = get_time();
+	if (philo->last_eat < time && philo->starve_time < time)
+		print_state(philo, DIED);
 	philo->last_eat = time + philo->arg->time_to_eat;
 	philo->starve_time = time + philo->arg->time_to_die;
 	philo->eat_count++;
