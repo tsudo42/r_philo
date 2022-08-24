@@ -34,7 +34,7 @@ void	*monitor(void *ptr)
 			philo->arg->num_to_eat <= philo->eat_count)
 			philo->state = END;
 		pthread_mutex_unlock(philo->state_lock);
-		usleep(5000);
+		usleep(800);
 	}
 	philo->state = END;
 	pthread_mutex_unlock(philo->state_lock);
