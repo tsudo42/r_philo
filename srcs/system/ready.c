@@ -41,7 +41,7 @@ int	set_arg(t_arg *arg, int argc, char **argv)
 	if (argc < 5 || 6 < argc)
 	{
 		write(STDERR_FILENO, ERRMSG_INVAL, ft_strlen(ERRMSG_INVAL));
-		return (-1);
+		exit(1);
 	}
 	is_error = 0;
 	arg->num_philo = get_num(argv[1], 1, MAX_PHILO, &is_error);
