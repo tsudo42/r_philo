@@ -22,7 +22,7 @@ int	join_philo(t_data *data)
 	while (i < data->arg.num_philo)
 	{
 		if (data->philo[i].state != NOT_RUNNING && data->philo[i].pid > 0)
-			kill(data->philo[i].pid, SIGKILL);
+			kill(data->philo[i].pid, SIGTERM);
 		i++;
 	}
 	i = 0;
