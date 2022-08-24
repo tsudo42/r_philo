@@ -12,7 +12,7 @@
 
 #include "system.h"
 
-int	set_start_delay(t_data *data, int num_philo)
+int	calc_delay(t_data *data, int num_philo)
 {
 	int	i;
 
@@ -106,7 +106,7 @@ int	launch(t_data *data)
 		data->philo[i].waiter_pid = waiter_pid;
 		i++;
 	}
-	set_start_delay(data, data->arg.num_philo);
+	calc_delay(data, data->arg.num_philo);
 	if (launch_philo(data, data->arg.num_philo) != 0)
 		kill(waiter_pid, SIGTERM);
 	debug_write("launched!\n");
