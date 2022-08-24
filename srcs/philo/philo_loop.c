@@ -84,7 +84,8 @@ static int	eat(t_philo *philo)
 
 void	philo_loop(void *ptr)
 {
-	t_philo		*philo;
+	t_philo	*philo;
+	t_state	state;
 
 	philo = ptr;
 	start(philo);
@@ -97,5 +98,8 @@ void	philo_loop(void *ptr)
 		if (philo->think_delay)
 			my_usleep(philo->think_delay * 1000);
 	}
-	exit(END);
+	sem_wait(philo->sem->sem_monitor);
+	state = philo->state;
+	sem_post(philo->sem->sem_monitor);
+	exit(state);
 }

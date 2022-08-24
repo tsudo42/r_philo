@@ -44,9 +44,10 @@ typedef enum e_action {
 typedef enum e_state {
 	ALIVE		= 0,
 	STARVED		= 1,
-	END			= 2,
-	UNLAUNCHED	= 3,
-	PTHREAD_ERR	= 4
+	OVER		= 2,
+	KILLED		= 3,
+	NOT_RUNNING	= 4,
+	PTHREAD_ERR	= 5
 }	t_state;
 
 typedef struct s_arg{

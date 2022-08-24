@@ -89,7 +89,7 @@ void	setup_philo(t_data *data)
 	while (i < data->arg.num_philo)
 	{
 		data->philo[i].index = i + 1;
-		data->philo[i].state = UNLAUNCHED;
+		data->philo[i].state = NOT_RUNNING;
 		data->philo[i].arg = &data->arg;
 		data->philo[i].sem = &data->sem;
 		i++;

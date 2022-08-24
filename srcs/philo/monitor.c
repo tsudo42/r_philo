@@ -27,7 +27,7 @@ static int	check(t_philo *philo)
 	if (philo->arg->num_to_eat > 0 && \
 		philo->arg->num_to_eat < philo->eat_count)
 	{
-		philo->state = END;
+		philo->state = OVER;
 		return (1);
 	}
 	sem_post(philo->sem->sem_monitor);

@@ -57,7 +57,7 @@ int	launch_philo(t_data *data, int num_philo)
 			philo_loop(philo);
 		if (philo->pid < 0)
 		{
-			philo->state = UNLAUNCHED;
+			philo->state = NOT_RUNNING;
 			break ;
 		}
 		i++;

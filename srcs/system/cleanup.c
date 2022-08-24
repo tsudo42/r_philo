@@ -21,14 +21,14 @@ int	join_philo(t_data *data)
 	i = 0;
 	while (i < data->arg.num_philo)
 	{
-		if (data->philo[i].state != UNLAUNCHED && data->philo[i].pid > 0)
+		if (data->philo[i].state != NOT_RUNNING && data->philo[i].pid > 0)
 			kill(data->philo[i].pid, SIGKILL);
 		i++;
 	}
 	i = 0;
 	while (i < data->arg.num_philo)
 	{
-		if (data->philo[i].state != UNLAUNCHED)
+		if (data->philo[i].state != NOT_RUNNING)
 		{
 			waitpid(data->philo[i].pid, &state, WUNTRACED);
 			data->philo[i].state = state;
@@ -49,6 +49,8 @@ int	cleanup_sem(t_data *data)
 	if (data->sem.sem_fork)
 		ret |= sem_close(data->sem.sem_fork);
 	if (data->sem.sem_printer)
+		ret |= sem_close(data->sem.sem_printer);
+	if (data->sem.sem_monitor)
 		ret |= sem_close(data->sem.sem_printer);
 	ret |= sem_unlink(SEM_STATE_NAME);
 	ret |= sem_unlink(SEM_FORK_NAME);
