@@ -17,7 +17,7 @@
 # include "utils.h"
 
 unsigned long	get_time(void);
-void			my_usleep(unsigned long us);
+void			monitoring_usleep(t_philo *philo, unsigned long us);
 
 void			*monitor(void *ptr);
 void			philo_loop(void *ptr);

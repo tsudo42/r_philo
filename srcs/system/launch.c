@@ -71,6 +71,7 @@ void	waiter(t_data *data)
 {
 	int	i;
 
+	debug_write("waiter activated\n");
 	i = 0;
 	while (i < data->arg.num_philo)
 	{
@@ -81,6 +82,7 @@ void	waiter(t_data *data)
 		}
 		i++;
 	}
+	debug_write("waiter finished\n");
 	exit(0);
 }
 
@@ -107,6 +109,7 @@ int	launch(t_data *data)
 	set_start_delay(data, data->arg.num_philo);
 	if (launch_philo(data, data->arg.num_philo) != 0)
 		kill(waiter_pid, SIGTERM);
-	waitpid(waiter_pid, NULL, 0);
+	debug_write("launched!\n");
+	waitpid(waiter_pid, NULL, WUNTRACED);
 	return (0);
 }

@@ -26,7 +26,10 @@ void	print_state(t_philo *philo, t_action action)
 	sem_wait(philo->sem->sem_printer);
 	printf(strs[action], get_time() - philo->start_time, philo->index);
 	if (action == DIED)
-		return ;
+	{
+		kill(philo->waiter_pid, SIGTERM);
+		exit(0);
+	}
 	sem_post(philo->sem->sem_printer);
 }
 
@@ -34,10 +37,18 @@ static int	start(t_philo *philo)
 {
 	philo->last_eat = get_time();
 	philo->starve_time = philo->last_eat + philo->arg->time_to_die;
+	if (philo->arg->num_philo == 1)
+	{
+		if (philo->arg->num_to_eat == 0)
+			sem_post(philo->sem->sem_waiter);
+		print_state(philo, TAKE_FORK);
+		while (1)
+			monitoring_usleep(philo, philo->arg->time_to_die);
+	}
 	if (philo->start_delay != 0)
 	{
 		print_state(philo, THINKING);
-		my_usleep(philo->start_delay);
+		monitoring_usleep(philo, philo->start_delay);
 	}
 	return (0);
 }
@@ -63,7 +74,7 @@ static int	eat(t_philo *philo)
 	}
 	print_state(philo, EAT);
 	\
-	my_usleep(philo->arg->time_to_eat * 1000);
+	monitoring_usleep(philo, philo->arg->time_to_eat * 1000);
 	sem_post(philo->sem->sem_fork);
 	sem_post(philo->sem->sem_fork);
 	return (0);
@@ -79,9 +90,9 @@ void	philo_loop(void *ptr)
 	{
 		eat(philo);
 		print_state(philo, SLEEP);
-		my_usleep(philo->arg->time_to_sleep * 1000);
+		monitoring_usleep(philo, philo->arg->time_to_sleep * 1000);
 		print_state(philo, THINKING);
 		if (philo->think_delay)
-			my_usleep(philo->think_delay * 1000);
+			monitoring_usleep(philo, philo->think_delay * 1000);
 	}
 }

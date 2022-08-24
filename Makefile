@@ -33,7 +33,7 @@ S_SRCS	:= \
 
 SRCS	+= $(P_SRCS)
 P_SRCS	:= \
-	srcs/philo/my_usleep.c \
+	srcs/philo/monitoring_usleep.c \
 	srcs/philo/philo_loop.c \
 	srcs/philo/get_time.c \
 

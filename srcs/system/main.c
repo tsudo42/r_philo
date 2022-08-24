@@ -19,7 +19,6 @@ int	main(int argc, char **argv)
 
 	ready(&data, argc, argv);
 	launch(&data);
-	debug_write("launched!\n");
 	ret = cleanup(&data);
 	return (ret);
 }
