@@ -12,7 +12,7 @@
 
 #include "system.h"
 
-int	calc_delay(t_data *data, int num_philo)
+void	calc_delay(t_data *data, int num_philo)
 {
 	int	i;
 
@@ -25,6 +25,9 @@ int	calc_delay(t_data *data, int num_philo)
 				data->philo[i].start_delay = 0;
 			else
 				data->philo[i].start_delay = 800 * data->arg.time_to_eat;
+			if (data->arg.time_to_eat > data->arg.time_to_sleep)
+				data->philo[i].think_delay = \
+					data->arg.time_to_eat - data->arg.time_to_sleep - 10;
 		}
 		else
 		{
@@ -32,11 +35,10 @@ int	calc_delay(t_data *data, int num_philo)
 				1000 * data->arg.time_to_eat * 2 * i / num_philo;
 			if (data->arg.time_to_eat > data->arg.time_to_sleep)
 				data->philo[i].think_delay = \
-					data->arg.time_to_eat - data->arg.time_to_sleep;
+					data->arg.time_to_eat - data->arg.time_to_sleep + 60;
 		}
 		i++;
 	}
-	return (0);
 }
 
 int	launch_philo(t_data *data, int num_philo)
