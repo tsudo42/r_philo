@@ -66,13 +66,6 @@ int	launch_philo(t_data *data, int num_philo)
 
 int	launch(t_data *data)
 {
-	if (data->arg.num_philo == 1)
-	{
-		printf("0 1 has taken a fork\n");
-		usleep(data->arg.time_to_die * 1000);
-		printf("%ld 1 died\n", data->arg.time_to_die);
-		return (0);
-	}
 	set_start_delay(data, data->arg.num_philo);
 	return (launch_philo(data, data->arg.num_philo));
 }
