@@ -53,7 +53,9 @@ static int	check_alive(t_philo *philo)
 {
 	int	ret;
 
+	sem_wait(philo->sem->sem_monitor);
 	ret = (philo->state == ALIVE);
+	sem_post(philo->sem->sem_monitor);
 	return (ret);
 }
 
@@ -66,11 +68,13 @@ static int	eat(t_philo *philo)
 	sem_wait(philo->sem->sem_fork);
 	print_state(philo, TAKE_FORK);
 	\
+	sem_wait(philo->sem->sem_monitor);
 	time = get_time();
 	philo->last_eat = time + philo->arg->time_to_eat;
 	philo->starve_time = time + philo->arg->time_to_die;
 	philo->eat_count++;
 	print_state(philo, EAT);
+	sem_post(philo->sem->sem_monitor);
 	\
 	my_usleep(philo->arg->time_to_eat * 1000);
 	sem_post(philo->sem->sem_fork);

@@ -53,6 +53,7 @@ int	cleanup_sem(t_data *data)
 	ret |= sem_unlink(SEM_STATE_NAME);
 	ret |= sem_unlink(SEM_FORK_NAME);
 	ret |= sem_unlink(SEM_PRINTER_NAME);
+	ret |= sem_unlink(SEM_MONITOR_NAME);
 	return (ret);
 }
 

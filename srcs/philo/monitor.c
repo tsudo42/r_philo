@@ -21,6 +21,7 @@ void	*monitor(void *ptr)
 	usleep(philo->arg->time_to_die * 500);
 	while (1)
 	{
+		sem_wait(philo->sem->sem_monitor);
 		time = get_time();
 		if (philo->last_eat < time && philo->starve_time < time)
 		{
@@ -34,6 +35,7 @@ void	*monitor(void *ptr)
 			philo->state = END;
 			break ;
 		}
+		sem_post(philo->sem->sem_monitor);
 		usleep(5000);
 	}
 	sem_post(philo->sem->sem_state);
