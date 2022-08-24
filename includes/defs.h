@@ -75,6 +75,7 @@ typedef struct s_philo
 	pid_t			pid;
 	unsigned long	start_time;
 	unsigned long	start_delay;
+	long			think_delay;
 	int				eat_count;
 	long			starve_time;
 	long			last_eat;

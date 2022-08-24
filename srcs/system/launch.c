@@ -30,6 +30,9 @@ int	set_start_delay(t_data *data, int num_philo)
 		{
 			data->philo[i].start_delay = \
 				1000 * data->arg.time_to_eat * 2 * i / num_philo;
+			if (data->arg.time_to_eat > data->arg.time_to_sleep)
+				data->philo[i].think_delay = \
+					data->arg.time_to_eat - data->arg.time_to_sleep;
 		}
 		i++;
 	}

@@ -94,6 +94,8 @@ void	philo_loop(void *ptr)
 		print_state(philo, SLEEP);
 		my_usleep(philo->arg->time_to_sleep * 1000);
 		print_state(philo, THINKING);
+		if (philo->think_delay)
+			my_usleep(philo->think_delay * 1000);
 	}
 	exit(END);
 }
