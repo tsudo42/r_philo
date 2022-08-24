@@ -74,13 +74,10 @@ int	cleanup_sem(t_data *data)
 	int	ret;
 
 	ret = 0;
-	if (data->sem.sem_state)
-		ret |= sem_close(data->sem.sem_state);
 	if (data->sem.sem_fork)
 		ret |= sem_close(data->sem.sem_fork);
 	if (data->sem.sem_printer)
 		ret |= sem_close(data->sem.sem_printer);
-	ret |= sem_unlink(SEM_STATE_NAME);
 	ret |= sem_unlink(SEM_FORK_NAME);
 	ret |= sem_unlink(SEM_PRINTER_NAME);
 	return (ret);

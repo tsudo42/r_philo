@@ -58,12 +58,10 @@ typedef struct s_arg{
 	int		num_to_eat;
 }	t_arg;
 
-# define SEM_STATE_NAME		"/sem_state"
 # define SEM_FORK_NAME		"/sem_fork"
 # define SEM_PRINTER_NAME	"/sem_printer"
 
 typedef struct s_sem_set {
-	sem_t			*sem_state;
 	sem_t			*sem_fork;
 	sem_t			*sem_printer;
 }	t_sem_set;
