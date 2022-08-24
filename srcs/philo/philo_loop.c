@@ -55,6 +55,12 @@ static int	eat(t_philo *philo)
 	philo->last_eat = time + philo->arg->time_to_eat;
 	philo->starve_time = time + philo->arg->time_to_die;
 	philo->eat_count++;
+	if (philo->arg->num_to_eat > 0 && \
+		philo->arg->num_to_eat <= philo->eat_count)
+	{
+		sem_post(philo->sem->sem_waiter);
+		philo->arg->num_to_eat = -1;
+	}
 	print_state(philo, EAT);
 	\
 	my_usleep(philo->arg->time_to_eat * 1000);

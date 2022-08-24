@@ -59,10 +59,12 @@ typedef struct s_arg{
 }	t_arg;
 
 # define SEM_FORK_NAME		"/sem_fork"
+# define SEM_WAITER_NAME	"/sem_waiter"
 # define SEM_PRINTER_NAME	"/sem_printer"
 
 typedef struct s_sem_set {
 	sem_t			*sem_fork;
+	sem_t			*sem_waiter;
 	sem_t			*sem_printer;
 }	t_sem_set;
 
@@ -79,6 +81,7 @@ typedef struct s_philo
 	t_state			state;
 	t_arg			*arg;
 	t_sem_set		*sem;
+	pid_t			waiter_pid;
 }	t_philo;
 
 typedef struct s_data

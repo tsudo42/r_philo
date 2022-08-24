@@ -67,8 +67,46 @@ int	launch_philo(t_data *data, int num_philo)
 	return (-1);
 }
 
+void	waiter(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->arg.num_philo)
+	{
+		if (sem_wait(data->sem.sem_waiter))
+		{
+			write(STDERR_FILENO, ERRMSG_ANY, ft_strlen(ERRMSG_ANY));
+			exit(1);
+		}
+		i++;
+	}
+	exit(0);
+}
+
 int	launch(t_data *data)
 {
+	pid_t	waiter_pid;
+	int		i;
+
+	waiter_pid = fork();
+	if (waiter_pid < 0)
+	{
+		write(STDERR_FILENO, ERRMSG_ANY, ft_strlen(ERRMSG_ANY));
+		cleanup_sem(data);
+		exit(1);
+	}
+	if (waiter_pid == 0)
+		waiter(data);
+	i = 0;
+	while (i < data->arg.num_philo)
+	{
+		data->philo[i].waiter_pid = waiter_pid;
+		i++;
+	}
 	set_start_delay(data, data->arg.num_philo);
-	return (launch_philo(data, data->arg.num_philo));
+	if (launch_philo(data, data->arg.num_philo) != 0)
+		kill(waiter_pid, SIGTERM);
+	waitpid(waiter_pid, NULL, 0);
+	return (0);
 }
