@@ -34,23 +34,6 @@ int	join_philo(t_data *data)
 	return (0);
 }
 
-int	cleanup_mutex(t_data *data)
-{
-	int	i;
-
-	debug_write("cleaning mutex up...\n");
-	i = 0;
-	while (i < data->arg.num_philo)
-	{
-		pthread_mutex_destroy(&(data->philo_state[i]));
-		pthread_mutex_destroy(&(data->fork[i]));
-		i++;
-	}
-	pthread_mutex_destroy(&(data->printer));
-	debug_write("cleaned!\n");
-	return (0);
-}
-
 int	print_error(t_data *data)
 {
 	int	i;

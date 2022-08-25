@@ -55,27 +55,6 @@ int	set_arg(t_arg *arg, int argc, char **argv)
 	return (is_error);
 }
 
-int	ready_mutex(t_data *data)
-{
-	int	i;
-
-	errno = 0;
-	i = 0;
-	while (i < data->arg.num_philo)
-	{
-		pthread_mutex_init(&(data->philo_state[i]), NULL);
-		pthread_mutex_init(&(data->fork[i]), NULL);
-		i++;
-	}
-	pthread_mutex_init(&data->printer, NULL);
-	if (errno != 0)
-	{
-		cleanup_mutex(data);
-		return (-1);
-	}
-	return (0);
-}
-
 void	setup_philo_fork(t_data *data, int i, int num_philo)
 {
 	if (num_philo % 2)

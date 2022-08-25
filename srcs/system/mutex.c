@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   system.h                                           :+:      :+:    :+:   */
+/*   mutex.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsudo <tsudo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,19 +10,42 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SYSTEM_H
-# define SYSTEM_H
+#include "system.h"
 
-# include "defs.h"
-# include "philo.h"
-# include "utils.h"
-# include "debug.h"
+int	cleanup_mutex(t_data *data)
+{
+	int	i;
 
-int		ready(t_data *data, int argc, char **argv);
-int		launch(t_data *data);
-int		cleanup(t_data *data);
+	debug_write("cleaning mutex up...\n");
+	i = 0;
+	while (i < data->arg.num_philo)
+	{
+		pthread_mutex_destroy(&(data->philo_state[i]));
+		pthread_mutex_destroy(&(data->fork[i]));
+		i++;
+	}
+	pthread_mutex_destroy(&(data->printer));
+	debug_write("cleaned!\n");
+	return (0);
+}
 
-int		ready_mutex(t_data *data);
-int		cleanup_mutex(t_data *data);
+int	ready_mutex(t_data *data)
+{
+	int	i;
 
-#endif /* SYSTEM_H */
+	errno = 0;
+	i = 0;
+	while (i < data->arg.num_philo)
+	{
+		pthread_mutex_init(&(data->philo_state[i]), NULL);
+		pthread_mutex_init(&(data->fork[i]), NULL);
+		i++;
+	}
+	pthread_mutex_init(&data->printer, NULL);
+	if (errno != 0)
+	{
+		cleanup_mutex(data);
+		return (-1);
+	}
+	return (0);
+}

@@ -27,6 +27,7 @@ endif
 SRCS	+= $(S_SRCS)
 S_SRCS	:= \
 	srcs/system/ready.c \
+	srcs/system/mutex.c \
 	srcs/system/launch.c \
 	srcs/system/main.c \
 	srcs/system/cleanup.c \
