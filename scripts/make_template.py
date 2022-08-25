@@ -32,7 +32,7 @@ LIBFT	:=
 UNAME	:= $(shell uname)
 
 ifeq ($(DEBUG), 1)
-CFLAGS	+= -g3
+CFLAGS	+= -g3 -fsanitize=thread
 endif
 
 # **************************************************************************** #
