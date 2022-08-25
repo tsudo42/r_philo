@@ -1,5 +1,6 @@
 ### philo ###
 /philo
+/philo_bonus
 
 .vscode/**
 /tmp/**
