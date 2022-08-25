@@ -35,7 +35,7 @@ void	print_state(t_philo *philo, t_action action)
 
 static int	start(t_philo *philo)
 {
-	philo->last_eat = get_time();
+	philo->last_eat = philo->start_time;
 	philo->starve_time = philo->last_eat + philo->arg->time_to_die;
 	if (philo->arg->num_philo == 1)
 	{
@@ -43,7 +43,7 @@ static int	start(t_philo *philo)
 			sem_post(philo->sem->sem_waiter);
 		print_state(philo, TAKE_FORK);
 		while (1)
-			monitoring_usleep(philo, philo->arg->time_to_die);
+			monitoring_usleep(philo, philo->arg->time_to_die * 1000);
 	}
 	if (philo->start_delay != 0)
 	{
@@ -93,6 +93,6 @@ void	philo_loop(void *ptr)
 		monitoring_usleep(philo, philo->arg->time_to_sleep * 1000);
 		print_state(philo, THINKING);
 		if (philo->think_delay)
-			monitoring_usleep(philo, philo->think_delay * 1000);
+			monitoring_usleep(philo, philo->think_delay);
 	}
 }
