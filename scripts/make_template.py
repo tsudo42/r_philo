@@ -23,7 +23,7 @@ MAKEFILE_PART1 = """\
 #                                                                              #
 # **************************************************************************** #
 
-NAME	:= philo
+NAME	:= philo_bonus
 CC		:= gcc
 CFLAGS	:= -Wall -Wextra -Werror -MMD -MP -O0
 LDFLAGS	:= -lpthread
