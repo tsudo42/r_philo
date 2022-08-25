@@ -26,6 +26,7 @@ endif
 
 SRCS	+= $(S_SRCS)
 S_SRCS	:= \
+	srcs/system/calc_delay.c \
 	srcs/system/ready.c \
 	srcs/system/launch.c \
 	srcs/system/main.c \
