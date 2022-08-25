@@ -93,11 +93,17 @@ void	*philo_loop(void *ptr)
 	philo = ptr;
 	if (start(philo) != 0)
 		return (NULL);
-	while (check_alive(philo))
+	while (1)
 	{
+		if (!check_alive(philo))
+			return (NULL);
 		eat(philo);
+		if (!check_alive(philo))
+			return (NULL);
 		print_state(philo, SLEEP);
 		my_usleep(philo->arg->time_to_sleep * 1000);
+		if (!check_alive(philo))
+			return (NULL);
 		print_state(philo, THINKING);
 	}
 	return (NULL);
