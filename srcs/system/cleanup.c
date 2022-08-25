@@ -41,23 +41,6 @@ int	wait_philo(t_data *data)
 	return (0);
 }
 
-int	cleanup_sem(t_data *data)
-{
-	int	ret;
-
-	ret = 0;
-	if (data->sem.sem_fork)
-		ret |= sem_close(data->sem.sem_fork);
-	if (data->sem.sem_printer)
-		ret |= sem_close(data->sem.sem_waiter);
-	if (data->sem.sem_printer)
-		ret |= sem_close(data->sem.sem_printer);
-	ret |= sem_unlink(SEM_FORK_NAME);
-	ret |= sem_unlink(SEM_WAITER_NAME);
-	ret |= sem_unlink(SEM_PRINTER_NAME);
-	return (ret);
-}
-
 int	print_error(t_data *data)
 {
 	int	i;

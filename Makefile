@@ -29,6 +29,7 @@ S_SRCS	:= \
 	srcs/system/ready.c \
 	srcs/system/launch.c \
 	srcs/system/main.c \
+	srcs/system/semaphore.c \
 	srcs/system/cleanup.c \
 
 SRCS	+= $(P_SRCS)

@@ -20,7 +20,9 @@
 
 int		ready(t_data *data, int argc, char **argv);
 int		launch(t_data *data);
-int		cleanup_sem(t_data *data);
 int		cleanup(t_data *data);
+
+int		ready_sem(t_data *data);
+int		cleanup_sem(t_data *data);
 
 #endif /* SYSTEM_H */
