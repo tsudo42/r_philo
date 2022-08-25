@@ -76,6 +76,34 @@ int	ready_mutex(t_data *data)
 	return (0);
 }
 
+void	setup_philo_fork(t_data *data, int i, int num_philo)
+{
+	if (num_philo % 2)
+	{
+		if (i == 0)
+		{
+			data->philo[i].fork_first = &(data->fork[0]);
+			data->philo[i].fork_second = &(data->fork[num_philo - 1]);
+		}
+		else
+		{
+			data->philo[i].fork_first = &(data->fork[i - 1]);
+			data->philo[i].fork_second = &(data->fork[i]);
+		}
+		return ;
+	}
+	if (i % 2)
+	{
+		data->philo[i].fork_first = &(data->fork[(i + 1) % num_philo]);
+		data->philo[i].fork_second = &(data->fork[i]);
+	}
+	else
+	{
+		data->philo[i].fork_first = &(data->fork[i]);
+		data->philo[i].fork_second = &(data->fork[i + 1]);
+	}
+}
+
 void	setup_philo(t_data *data)
 {
 	int	i;
@@ -87,15 +115,7 @@ void	setup_philo(t_data *data)
 		data->philo[i].state = UNLAUNCHED;
 		data->philo[i].state_lock = &(data->philo_state[i]);
 		\
-		data->philo[i].fork_first = &(data->fork[0]);
-		data->philo[i].fork_second = &(data->fork[i]);
-		if (i != data->arg.num_philo - 1 && i % 2 == 0)
-		{
-			data->philo[i].fork_first = &(data->fork[i]);
-			data->philo[i].fork_second = &(data->fork[i + 1]);
-		}
-		else if (i != data->arg.num_philo - 1)
-			data->philo[i].fork_first = &(data->fork[i + 1]);
+		setup_philo_fork(data, i, data->arg.num_philo);
 		\
 		data->philo[i].printer = &data->printer;
 		data->philo[i].arg = &data->arg;
