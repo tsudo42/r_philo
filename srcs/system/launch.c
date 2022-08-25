@@ -17,7 +17,7 @@ void	calc_delay(t_data *data, int num_philo)
 	int	i;
 
 	i = 0;
-	while (i < num_philo)
+	while (i < num_philo && num_philo != 1)
 	{
 		if (num_philo % 2 == 0)
 		{
@@ -32,10 +32,10 @@ void	calc_delay(t_data *data, int num_philo)
 		else
 		{
 			data->philo[i].start_delay = \
-				1000 * data->arg.time_to_eat * 2 * i / num_philo;
-			if (data->arg.time_to_eat > data->arg.time_to_sleep)
+				1000 * data->arg.time_to_eat * i / (num_philo / 2);
+			if (data->arg.time_to_eat + 60 > data->arg.time_to_sleep)
 				data->philo[i].think_delay = \
-					data->arg.time_to_eat - data->arg.time_to_sleep + 60;
+					data->arg.time_to_eat + 60 - data->arg.time_to_sleep;
 		}
 		i++;
 	}
