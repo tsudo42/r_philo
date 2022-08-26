@@ -60,6 +60,7 @@ typedef struct s_philo
 	int				index;
 	pthread_t		thread;
 	unsigned long	start_delay;
+	unsigned long	think_delay;
 	int				eat_count;
 	long			starve_time;
 	long			last_eat;

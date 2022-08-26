@@ -105,6 +105,8 @@ void	*philo_loop(void *ptr)
 		if (!check_alive(philo))
 			return (NULL);
 		print_state(philo, THINKING);
+		if (philo->think_delay)
+			my_usleep(philo->think_delay);
 	}
 	return (NULL);
 }

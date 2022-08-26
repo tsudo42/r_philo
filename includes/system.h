@@ -20,6 +20,7 @@
 
 int		ready(t_data *data, int argc, char **argv);
 int		launch(t_data *data);
+void	calc_delay(t_data *data, int num_philo);
 int		cleanup(t_data *data);
 
 int		ready_mutex(t_data *data);

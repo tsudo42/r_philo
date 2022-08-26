@@ -12,34 +12,6 @@
 
 #include "system.h"
 
-int	set_start_delay(t_data *data, int num_philo)
-{
-	int	i;
-
-	i = 0;
-	while (i < num_philo)
-	{
-		if (num_philo % 2 == 0)
-		{
-			if (i % 2 == 0)
-				data->philo[i].start_delay = 0;
-			else
-				data->philo[i].start_delay = 500;
-		}
-		else
-		{
-			if (i % 2 == 0)
-				data->philo[i].start_delay = \
-					1000 * data->arg.time_to_eat * (i / 2) / (num_philo / 2);
-			else
-				data->philo[i].start_delay = \
-					1000 * data->arg.time_to_eat + 500;
-		}
-		i++;
-	}
-	return (0);
-}
-
 int	launch_error(t_data *data, int num_philo)
 {
 	int	i;
@@ -89,6 +61,6 @@ int	launch(t_data *data)
 		printf("%ld 1 died\n", data->arg.time_to_die);
 		return (0);
 	}
-	set_start_delay(data, data->arg.num_philo);
+	calc_delay(data, data->arg.num_philo);
 	return (launch_philo(data, data->arg.num_philo));
 }
