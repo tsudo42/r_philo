@@ -18,7 +18,8 @@ void	my_usleep(unsigned long us)
 	struct timeval	end;
 
 	gettimeofday(&end, NULL);
-	end.tv_usec += us;
+	end.tv_sec += us / 1000000;
+	end.tv_usec += us % 1000000;
 	if (end.tv_usec >= 1000000)
 	{
 		end.tv_sec += (end.tv_usec / 1000000);
