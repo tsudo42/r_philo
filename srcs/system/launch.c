@@ -56,6 +56,8 @@ int	launch(t_data *data)
 {
 	if (data->arg.num_philo == 1)
 	{
+		if (data->arg.num_to_eat == 0)
+			return (0);
 		printf("0 1 has taken a fork\n");
 		usleep(data->arg.time_to_die * 1000);
 		printf("%ld 1 died\n", data->arg.time_to_die);
