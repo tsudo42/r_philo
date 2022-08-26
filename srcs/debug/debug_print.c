@@ -20,17 +20,3 @@ int	debug_write(const char *str)
 	}
 	return (0);
 }
-
-int	debug_locked_write(const char *str, pthread_mutex_t *mutex)
-{
-	int	ret;
-
-	if (MY_DEBUG)
-	{
-		pthread_mutex_unlock(mutex);
-		ret = write(STDERR_FILENO, str, ft_strlen(str));
-		pthread_mutex_lock(mutex);
-		return (ret);
-	}
-	return (0);
-}

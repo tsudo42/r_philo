@@ -15,7 +15,6 @@
 
 # include "defs.h"
 
-int				debug_write(const char *str);
-int				debug_locked_write(const char *str, pthread_mutex_t *mutex);
+int	debug_write(const char *str);
 
 #endif /* DEBUG_H */
