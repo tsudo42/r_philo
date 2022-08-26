@@ -70,9 +70,14 @@ static int	eat(t_philo *philo)
 	long	time;
 
 	pthread_mutex_lock(philo->fork_first);
+	pthread_mutex_lock(philo->state_lock);
 	print_state(philo, TAKE_FORK);
+	pthread_mutex_unlock(philo->state_lock);
+	\
 	pthread_mutex_lock(philo->fork_second);
+	pthread_mutex_lock(philo->state_lock);
 	print_state(philo, TAKE_FORK);
+	pthread_mutex_unlock(philo->state_lock);
 	\
 	pthread_mutex_lock(philo->state_lock);
 	time = get_time();
