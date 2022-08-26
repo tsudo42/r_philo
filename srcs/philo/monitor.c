@@ -17,7 +17,7 @@ int	monitor_philo(t_philo *philo, int *min_eat_count)
 	long	time;
 
 	pthread_mutex_lock(philo->state_lock);
-	if (philo->state == ALIVE)
+	if (philo->state == ALIVE && philo->last_eat != 0)
 	{
 		time = get_time();
 		if (philo->last_eat < time && philo->starve_time < time)
