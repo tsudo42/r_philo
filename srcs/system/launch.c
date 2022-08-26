@@ -45,10 +45,14 @@ int	launch_philo(t_data *data, int num_philo)
 		}
 		i++;
 	}
-	if (i == num_philo && \
-		pthread_create(&data->monitor_thread, NULL, monitor, data) == 0 && \
-		pthread_detach(data->monitor_thread) == 0)
-		return (0);
+	if (i == num_philo)
+	{
+		if (pthread_create(&data->monitor_thread, NULL, monitor, data) == 0)
+		{
+			data->monitor_launched = 1;
+			return (0);
+		}
+	}
 	return (launch_error(data, num_philo));
 }
 

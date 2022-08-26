@@ -43,8 +43,10 @@ void	print_state(t_philo *philo, t_action action)
 
 static int	start(t_philo *philo)
 {
+	pthread_mutex_lock(philo->state_lock);
 	philo->last_eat = get_time();
 	philo->starve_time = philo->last_eat + philo->arg->time_to_die;
+	pthread_mutex_unlock(philo->state_lock);
 	if (philo->start_delay != 0)
 	{
 		print_state(philo, THINKING);
@@ -100,11 +102,15 @@ void	*philo_loop(void *ptr)
 		eat(philo);
 		if (!check_alive(philo))
 			return (NULL);
+		pthread_mutex_lock(philo->state_lock);
 		print_state(philo, SLEEP);
+		pthread_mutex_unlock(philo->state_lock);
 		my_usleep(philo->arg->time_to_sleep * 1000);
 		if (!check_alive(philo))
 			return (NULL);
+		pthread_mutex_lock(philo->state_lock);
 		print_state(philo, THINKING);
+		pthread_mutex_unlock(philo->state_lock);
 		if (philo->think_delay)
 			my_usleep(philo->think_delay);
 	}

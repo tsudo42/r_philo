@@ -27,7 +27,7 @@ int	join_philo(t_data *data)
 			continue ;
 		}
 		pthread_mutex_unlock(data->philo[i].state_lock);
-		pthread_join(data->philo[i++].thread, NULL);
+		pthread_join(data->philo[i].thread, NULL);
 		i++;
 	}
 	debug_write("joined!\n");
@@ -54,6 +54,8 @@ int	print_error(t_data *data)
 int	cleanup(t_data *data)
 {
 	join_philo(data);
+	if (data->monitor_launched)
+		pthread_join(data->monitor_thread, NULL);
 	cleanup_mutex(data);
 	return (print_error(data));
 }

@@ -80,6 +80,7 @@ typedef struct s_data
 	pthread_mutex_t	fork[MAX_PHILO];
 	pthread_mutex_t	printer;
 	pthread_t		monitor_thread;
+	int				monitor_launched;
 }	t_data;
 
 #endif /* DEFS_H */
