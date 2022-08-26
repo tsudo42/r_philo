@@ -19,7 +19,8 @@ void	monitoring_usleep(t_philo *philo, unsigned long us)
 	long			time;
 
 	gettimeofday(&end, NULL);
-	end.tv_usec += us;
+	end.tv_sec += us / 1000000;
+	end.tv_usec += us % 1000000;
 	if (end.tv_usec >= 1000000)
 	{
 		end.tv_sec += (end.tv_usec / 1000000);
